@@ -13,7 +13,7 @@ export const StatusBar: React.FC = () => {
 
   const syncingCount = Object.keys(activeSyncs).length;
 
-  const totalCapacityBytes = 10 * 1024 * 1024 * 1024; // 10 GB Cloudflare R2 Free Limit
+  const totalCapacityBytes = 10 * 1024 * 1024 * 1024; // 10 GB Supabase Storage Limit
   const usedMB = (totalStorageBytes / (1024 * 1024)).toFixed(1);
   const usedGB = (totalStorageBytes / (1024 * 1024 * 1024)).toFixed(2);
   const percentage = Math.min(100, Math.max(2, (totalStorageBytes / totalCapacityBytes) * 100));
@@ -21,7 +21,7 @@ export const StatusBar: React.FC = () => {
   const displayUsage = totalStorageBytes < 1024 * 1024 * 1024 ? `${usedMB} MB` : `${usedGB} GB`;
 
   return (
-    <footer className="h-8 bg-[#070a12] border-t border-white/10 flex items-center justify-between px-4 text-xs text-slate-400 select-none font-mono">
+    <footer className="h-8 bg-[#070a12] border-t border-white/10 flex items-center justify-between px-4 text-xs text-slate-400 select-none font-mono flex-shrink-0">
       {/* Connectivity Indicator */}
       <div className="flex items-center gap-2">
         {isOnline ? (
@@ -55,7 +55,7 @@ export const StatusBar: React.FC = () => {
       {/* Cloud Storage Usage Bar */}
       <div className="flex items-center gap-2">
         <HardDrive size={12} className="text-slate-400" />
-        <span>R2 Storage:</span>
+        <span>Supabase Storage:</span>
         <div className="w-24 h-2 bg-slate-800 rounded-full overflow-hidden border border-white/10">
           <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: `${percentage}%` }} />
         </div>

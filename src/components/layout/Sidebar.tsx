@@ -20,20 +20,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
   ] as const;
 
   return (
-    <aside className="w-64 bg-[#0e1322] border-r border-white/10 flex flex-col justify-between p-4 select-none">
+    <aside className="w-64 bg-[#090d18] border-r border-white/10 flex flex-col justify-between p-4 select-none flex-shrink-0">
       {/* Navigation Links */}
       <div className="space-y-6">
-        {/* User Card */}
+        {/* User Profile Card */}
         {user && (
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/60 border border-white/10">
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/80 border border-white/10 shadow-inner">
             <img
               src={user.avatar_url || 'https://mc-heads.net/avatar/steve'}
               alt={user.name}
-              className="w-9 h-9 rounded-lg border border-emerald-500/40 bg-slate-800"
+              className="w-10 h-10 rounded-xl border border-emerald-500/40 bg-slate-950 flex-shrink-0"
             />
-            <div className="overflow-hidden">
-              <h4 className="text-sm font-semibold text-slate-100 truncate">{user.name}</h4>
-              <p className="text-xs text-emerald-400 font-mono truncate">{user.email}</p>
+            <div className="overflow-hidden flex-1">
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-xs font-extrabold text-slate-100 truncate">{user.name}</h4>
+                {user.isDemo && (
+                  <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono">
+                    DEMO
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-emerald-400 font-mono truncate mt-0.5">{user.email}</p>
             </div>
           </div>
         )}
@@ -46,10 +53,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all duration-200 ${
                   isActive
                     ? 'bg-gradient-to-r from-emerald-500/20 to-emerald-500/5 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(23,221,98,0.15)]'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'
                 }`}
               >
                 <Icon size={18} className={isActive ? 'text-emerald-400' : 'text-slate-400'} />
@@ -63,9 +70,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       {/* Logout Button */}
       <button
         onClick={logout}
-        className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-sm font-medium transition-all"
+        className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-xs font-bold transition-all"
       >
-        <LogOut size={18} />
+        <LogOut size={16} />
         <span>{t('nav.logout')}</span>
       </button>
     </aside>

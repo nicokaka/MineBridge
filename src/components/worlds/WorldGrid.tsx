@@ -35,17 +35,17 @@ export const WorldGrid: React.FC = () => {
         <div>
           <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight flex items-center gap-2">
             {t('dashboard.title')}
-            <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-normal">
+            <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-mono font-bold">
               {worlds.length} {worlds.length === 1 ? 'mundo' : 'mundos'}
             </span>
           </h1>
-          <p className="text-sm text-slate-400 mt-1">{t('dashboard.subtitle')}</p>
+          <p className="text-xs text-slate-400 mt-1">{t('dashboard.subtitle')}</p>
         </div>
 
         <button
           onClick={fetchWorlds}
           disabled={isScanning}
-          className="btn-secondary flex items-center gap-2 text-xs self-start sm:self-auto"
+          className="btn-secondary flex items-center gap-2 text-xs self-start sm:self-auto px-4 py-2.5 font-bold"
         >
           <RefreshCw size={14} className={isScanning ? 'animate-spin text-emerald-400' : ''} />
           <span>{isScanning ? t('dashboard.scanning') : t('dashboard.scanButton')}</span>
@@ -53,29 +53,30 @@ export const WorldGrid: React.FC = () => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/60 p-3 rounded-2xl border border-white/10">
-        {/* Search Input */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/80 p-3 rounded-2xl border border-white/10 backdrop-blur-md">
+        {/* Search Input with Proper Left Padding */}
         <div className="relative w-full sm:w-80">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 z-10 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('dashboard.searchPlaceholder')}
-            className="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/50"
+            className="w-full bg-slate-950 border border-white/15 rounded-xl text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/30 transition-all"
+            style={{ paddingLeft: '2.5rem', paddingRight: '1rem', paddingTop: '0.6rem', paddingBottom: '0.6rem' }}
           />
         </div>
 
         {/* Edition Filter Pills */}
-        <div className="flex items-center gap-1.5 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           {(['all', 'java', 'bedrock'] as const).map((edition) => (
             <button
               key={edition}
               onClick={() => setSelectedEdition(edition)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                 selectedEdition === edition
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-[0_0_12px_rgba(23,221,98,0.2)]'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'
               }`}
             >
               {edition === 'all' ? 'Todos' : edition}

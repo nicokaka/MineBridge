@@ -17,6 +17,9 @@ dist-ssr
 .env.local
 .env.production
 
+# Temporary & Build outputs
+scratch/
+src-tauri/target/
 
 # Editor directories and files
 .vscode/*

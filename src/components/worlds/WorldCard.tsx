@@ -4,8 +4,7 @@ import { MinecraftWorld, compressWorld, calculateWorldHash, readFileBytes, delet
 import { useSyncStore } from '../../stores/syncStore';
 import { useAuthStore } from '../../stores/authStore';
 import { useCloudStore } from '../../stores/cloudStore';
-import { CloudUpload, Box, Sparkles } from 'lucide-react';
-
+import { CloudUpload, Box, Sparkles, HardDrive, Calendar } from 'lucide-react';
 import { useToastStore } from '../../stores/toastStore';
 
 interface WorldCardProps {
@@ -62,17 +61,14 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
       const storageKey = `${user?.id || 'demo'}/${world.id}/world.zip`;
 
       if (user?.id && !user.isDemo) {
-        // Read compressed ZIP file bytes via Tauri
         const bytes = await readFileBytes(tempZip);
         const uint8Array = Uint8Array.from(bytes);
 
-        // Upload to Supabase Storage Bucket
         const uploadSuccess = await uploadWorldZip(storageKey, uint8Array);
         if (!uploadSuccess) {
           throw new Error('Falha ao enviar arquivo para o Supabase Storage');
         }
 
-        // Add record in PostgreSQL database
         await addCloudWorldRecord({
           user_id: user.id,
           world_name: world.name,
@@ -118,11 +114,10 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
     }
   };
 
-
   return (
-    <div className="glass-panel glass-panel-interactive p-4 relative overflow-hidden flex flex-col justify-between h-56 group border border-white/10 hover:border-emerald-500/40 select-none">
+    <div className="glass-panel glass-panel-interactive p-5 relative overflow-hidden flex flex-col justify-between min-h-[250px] group border border-white/10 hover:border-emerald-500/40 select-none shadow-lg">
       {/* Top Section */}
-      <div>
+      <div className="space-y-3">
         <div className="flex items-start justify-between gap-3">
           {/* Thumbnail / Icon */}
           <div className="w-12 h-12 rounded-xl bg-slate-900 border border-white/15 overflow-hidden flex-shrink-0 flex items-center justify-center shadow-inner">
@@ -137,18 +132,18 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
 
           {/* Edition Badge & Status */}
           <div className="flex flex-col items-end gap-1">
-            <span className={world.edition === 'java' ? 'badge-java' : 'badge-bedrock'}>
+            <span className={world.edition === 'java' ? 'badge-java font-mono uppercase tracking-wider' : 'badge-bedrock font-mono uppercase tracking-wider'}>
               {world.edition === 'java' ? t('worldCard.java') : t('worldCard.bedrock')}
             </span>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-400 font-mono tracking-wider">
               {world.launcher_type.toUpperCase()}
             </span>
           </div>
         </div>
 
         {/* Title & Path */}
-        <div className="mt-3">
-          <h3 className="text-base font-bold text-slate-100 group-hover:text-amber-300 transition-colors truncate">
+        <div>
+          <h3 className="text-base font-extrabold text-slate-100 group-hover:text-emerald-400 transition-colors truncate">
             {world.name}
           </h3>
           <p className="text-xs text-slate-400 font-mono truncate mt-0.5" title={world.path}>
@@ -159,7 +154,7 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
 
       {/* Syncing Progress Bar (XP Bar Style) */}
       {isSyncing ? (
-        <div className="space-y-1.5 my-2">
+        <div className="space-y-1.5 my-3">
           <div className="flex justify-between text-xs font-mono">
             <span className="text-emerald-400 flex items-center gap-1">
               <Sparkles size={12} className="animate-spin" />
@@ -172,30 +167,34 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
           </div>
         </div>
       ) : (
-        /* Metadata Footer */
-        <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-slate-400">
-          <div>
-            <span className="text-slate-500 font-medium">{t('worldCard.size')}: </span>
-            <span className="text-slate-200 font-mono">{formatSize(world.size_bytes)}</span>
+        /* Metadata Section - Clean 2-Row Layout */
+        <div className="space-y-1 py-3 my-1 border-t border-b border-white/10 text-xs">
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-slate-400 font-medium flex items-center gap-1.5">
+              <HardDrive size={13} className="text-slate-400" />
+              {t('worldCard.size')}:
+            </span>
+            <span className="font-mono text-emerald-400 font-bold">{formatSize(world.size_bytes)}</span>
           </div>
-          <div>
-            <span className="text-slate-500 font-medium">{t('worldCard.lastModified')}: </span>
-            <span className="text-slate-300">{formatDate(world.last_modified)}</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-slate-400 font-medium flex items-center gap-1.5">
+              <Calendar size={13} className="text-slate-400" />
+              {t('worldCard.lastModified')}:
+            </span>
+            <span className="text-slate-300 font-mono text-[11px]">{formatDate(world.last_modified)}</span>
           </div>
         </div>
       )}
 
-      {/* Sync Action Button */}
+      {/* Ultra-Premium Sync Button */}
       {!isSyncing && (
-        <div className="mt-3">
-          <button
-            onClick={handleSync}
-            className="w-full btn-emerald flex items-center justify-center gap-2 text-xs py-2"
-          >
-            <CloudUpload size={14} />
-            <span>{t('worldCard.sync')}</span>
-          </button>
-        </div>
+        <button
+          onClick={handleSync}
+          className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-extrabold shadow-[0_4px_15px_rgba(23,221,98,0.25)] rounded-xl py-2.5 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+        >
+          <CloudUpload size={16} />
+          <span>{t('worldCard.sync')}</span>
+        </button>
       )}
     </div>
   );

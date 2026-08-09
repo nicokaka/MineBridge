@@ -3,16 +3,37 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Minus, Square, X, Layers } from 'lucide-react';
 
 export const Titlebar: React.FC = () => {
-  const appWindow = getCurrentWindow();
+  const handleMinimize = async () => {
+    try {
+      const appWindow = getCurrentWindow();
+      await appWindow.minimize();
+    } catch (e) {
+      console.warn('Window minimize notice:', e);
+    }
+  };
 
-  const handleMinimize = () => appWindow.minimize();
-  const handleMaximize = () => appWindow.toggleMaximize();
-  const handleClose = () => appWindow.close();
+  const handleMaximize = async () => {
+    try {
+      const appWindow = getCurrentWindow();
+      await appWindow.toggleMaximize();
+    } catch (e) {
+      console.warn('Window maximize notice:', e);
+    }
+  };
+
+  const handleClose = async () => {
+    try {
+      const appWindow = getCurrentWindow();
+      await appWindow.close();
+    } catch (e) {
+      console.warn('Window close notice:', e);
+    }
+  };
 
   return (
     <header
       data-tauri-drag-region
-      className="h-10 bg-[#070a12] border-b border-white/10 flex items-center justify-between px-3 select-none z-50 text-slate-300"
+      className="h-10 bg-[#070a12] border-b border-white/10 flex items-center justify-between px-3 select-none z-50 text-slate-300 flex-shrink-0"
     >
       {/* Brand & Logo */}
       <div className="flex items-center gap-2 pointer-events-none">
