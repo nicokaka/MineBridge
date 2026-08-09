@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+@import "tailwindcss";
+
+
+
+:root {
+  /* Color Palette - Hybrid Minecraft Premium */
+  --bg-primary: #0b0f19;
+  --bg-secondary: #141a29;
+  --bg-card: rgba(23, 31, 51, 0.7);
+  --bg-card-hover: rgba(30, 42, 69, 0.85);
+  --bg-elevated: #1e2942;
+  --bg-glass: rgba(18, 25, 42, 0.75);
+
+  /* Accents */
+  --emerald: #17dd62;
+  --emerald-hover: #1ed15f;
+  --emerald-glow: rgba(23, 221, 98, 0.25);
+  
+  --diamond: #2cb9a8;
+  --diamond-glow: rgba(44, 185, 168, 0.25);
+  
+  --gold: #dda520;
+  --gold-glow: rgba(221, 165, 32, 0.25);
+  
+  --redstone: #e74c3c;
+  --redstone-glow: rgba(231, 76, 60, 0.25);
+
+  --xp-green: #7efc20;
+  --xp-bg: #1c300f;
+
+  --enchant-purple: #a020f0;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Text */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-hover-gold: #ffff55;
+
+  /* Borders & Glass */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(23, 221, 98, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(16px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated);
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--emerald-glow);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel-interactive {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-interactive:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+  box-shadow: 0 12px 40px 0 var(--emerald-glow);
+  transform: translateY(-2px);
+}
+
+/* Minecraft XP Bar */
+.xp-bar-container {
+  background: var(--xp-bg);
+  border: 2px solid #000;
+  border-radius: 4px;
+  height: 14px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.xp-bar-fill {
+  background: linear-gradient(180deg, #b0ff54 0%, #7efc20 50%, #58b813 100%);
+  height: 100%;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 10px #7efc20;
+}
+
+/* Slot Border - Minecraft Style */
+.mc-slot {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid #1e293b;
+  border-top-color: #0f172a;
+  border-left-color: #0f172a;
+  border-bottom-color: #334155;
+  border-right-color: #334155;
+}
+
+/* Buttons */
+.btn-emerald {
+  background: linear-gradient(180deg, #17dd62 0%, #15b852 100%);
+  color: #04240d;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px var(--emerald-glow);
+}
+
+.btn-emerald:hover {
+  background: linear-gradient(180deg, #1ed15f 0%, #17b853 100%);
+  box-shadow: 0 6px 20px rgba(23, 221, 98, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-emerald:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--diamond);
+  color: var(--text-hover-gold);
+}
+
+/* Badges */
+.badge-java {
+  background: rgba(23, 221, 98, 0.15);
+  color: var(--emerald);
+  border: 1px solid rgba(23, 221, 98, 0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.badge-bedrock {
+  background: rgba(44, 185, 168, 0.15);
+  color: var(--diamond);
+  border: 1px solid rgba(44, 185, 168, 0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+/* Titlebar drag handle */
+[data-tauri-drag-region] {
+  -webkit-app-region: drag;
+}
+
+button, input, select, a {
+  -webkit-app-region: no-drag;
+}

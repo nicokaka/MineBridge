@@ -1,0 +1,92 @@
+{
+  "app": {
+    "title": "MineBridge",
+    "subtitle": "Minecraft Cloud Save Manager",
+    "version": "v1.0.0-beta"
+  },
+  "nav": {
+    "localWorlds": "Local Worlds",
+    "cloudWorlds": "Cloud Saves",
+    "installations": "Installations",
+    "settings": "Settings",
+    "logout": "Sign Out"
+  },
+  "dashboard": {
+    "title": "Your Local Worlds",
+    "subtitle": "Discovered on your current device",
+    "scanButton": "Rescan Computer",
+    "scanning": "Scanning computer...",
+    "searchPlaceholder": "Search world by name or seed...",
+    "emptyWorlds": "No local worlds found.",
+    "emptyWorldsDesc": "Ensure Minecraft is installed or add a custom directory in Settings."
+  },
+  "cloud": {
+    "title": "Cloud Saves",
+    "subtitle": "Your safe backups ready for restoration",
+    "storageUsed": "Storage Used",
+    "restoreButton": "Restore to PC",
+    "refreshButton": "Refresh Cloud",
+    "downloading": "Downloading & Extracting...",
+    "restored": "Successfully Restored!",
+    "emptyCloud": "No worlds uploaded yet.",
+    "emptyCloudDesc": "Click 'Sync' on any local world to backup it to the cloud."
+  },
+  "installations": {
+    "title": "Detected Installations",
+    "subtitle": "Minecraft directories automatically identified by the native Rust scanner.",
+    "rescan": "Rescan"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Account preferences and sync options.",
+    "autoSync": "Background Auto-sync",
+    "autoSyncDesc": "Automatically sync when closing Minecraft",
+    "resourcePacks": "Include Resource Packs / Datapacks",
+    "resourcePacksDesc": "Save texture packs attached to the world",
+    "notifications": "System Notifications",
+    "notificationsDesc": "Notify when synchronization is complete",
+    "language": "App Language",
+    "languageDesc": "Change interface language in real-time"
+  },
+  "worldCard": {
+    "java": "Java Edition",
+    "bedrock": "Bedrock Edition",
+    "sync": "Sync Now",
+    "synced": "Synced",
+    "syncing": "Compressing & Uploading...",
+    "lastModified": "Modified",
+    "size": "Size",
+    "seed": "Seed",
+    "modeSurvival": "Survival",
+    "modeCreative": "Creative",
+    "modeAdventure": "Adventure",
+    "modeSpectator": "Spectator"
+  },
+  "conflict": {
+    "title": "Version Conflict Detected",
+    "subtitle": "Local world and cloud version were modified independently.",
+    "localVersion": "Local Version",
+    "cloudVersion": "Cloud Version",
+    "keepLocal": "Keep Local Version",
+    "keepCloud": "Restore Cloud Version",
+    "keepBoth": "Keep Both (Create Copy)"
+  },
+  "auth": {
+    "welcome": "Welcome to MineBridge",
+    "signInTitle": "Sign in to your account",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "or continue with"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Offline Mode",
+    "syncingCount": "syncing"
+  }
+}

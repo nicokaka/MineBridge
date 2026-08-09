@@ -1,0 +1,92 @@
+{
+  "app": {
+    "title": "MineBridge",
+    "subtitle": "Gerenciador de Saves em Nuvem do Minecraft",
+    "version": "v1.0.0-beta"
+  },
+  "nav": {
+    "localWorlds": "Mundos Locais",
+    "cloudWorlds": "Nuvem",
+    "installations": "Instalações",
+    "settings": "Configurações",
+    "logout": "Sair"
+  },
+  "dashboard": {
+    "title": "Seus Mundos Locais",
+    "subtitle": "Detectados no seu computador atual",
+    "scanButton": "Escanear Novamente",
+    "scanning": "Varrendo o computador...",
+    "searchPlaceholder": "Buscar mundo por nome ou seed...",
+    "emptyWorlds": "Nenhum mundo encontrado.",
+    "emptyWorldsDesc": "Certifique-se de que o Minecraft está instalado no seu computador ou adicione um caminho manual nas configurações."
+  },
+  "cloud": {
+    "title": "Mundos na Nuvem",
+    "subtitle": "Seus backups seguros prontos para restauração",
+    "storageUsed": "Uso de Armazenamento",
+    "restoreButton": "Restaurar no PC",
+    "refreshButton": "Atualizar Nuvem",
+    "downloading": "Baixando & Extraindo...",
+    "restored": "Restaurado com Sucesso!",
+    "emptyCloud": "Nenhum mundo salvo na nuvem ainda.",
+    "emptyCloudDesc": "Clique em 'Sincronizar' em um mundo local para enviá-lo para a nuvem."
+  },
+  "installations": {
+    "title": "Instalações Detectadas",
+    "subtitle": "Diretórios do Minecraft identificados automaticamente pelo scanner nativo em Rust.",
+    "rescan": "Re-escanear"
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Preferências da conta e sincronização.",
+    "autoSync": "Auto-sync em segundo plano",
+    "autoSyncDesc": "Sincronizar automaticamente ao fechar o Minecraft",
+    "resourcePacks": "Incluir Resource Packs / Datapacks",
+    "resourcePacksDesc": "Salvar pacotes de textura anexados ao mundo",
+    "notifications": "Notificações do Sistema",
+    "notificationsDesc": "Avisar quando a sincronização for concluída",
+    "language": "Idioma do Aplicativo",
+    "languageDesc": "Alterar o idioma da interface em tempo real"
+  },
+  "worldCard": {
+    "java": "Java Edition",
+    "bedrock": "Bedrock Edition",
+    "sync": "Sincronizar",
+    "synced": "Sincronizado",
+    "syncing": "Compactando & Enviando...",
+    "lastModified": "Modificado há",
+    "size": "Tamanho",
+    "seed": "Seed",
+    "modeSurvival": "Sobrevivência",
+    "modeCreative": "Criativo",
+    "modeAdventure": "Aventura",
+    "modeSpectator": "Espectador"
+  },
+  "conflict": {
+    "title": "Conflito de Versões Detectado",
+    "subtitle": "O mundo local e a versão da nuvem foram modificados independentemente.",
+    "localVersion": "Versão Local",
+    "cloudVersion": "Versão da Nuvem",
+    "keepLocal": "Manter Versão Local",
+    "keepCloud": "Restaurar da Nuvem",
+    "keepBoth": "Manter Ambas (Criar Cópia)"
+  },
+  "auth": {
+    "welcome": "Bem-vindo ao MineBridge",
+    "signInTitle": "Faça login na sua conta",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "seu@email.com",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Entrar",
+    "signUp": "Criar Conta",
+    "noAccount": "Não tem uma conta?",
+    "hasAccount": "Já tem uma conta?",
+    "orContinueWith": "ou continue com"
+  },
+  "status": {
+    "online": "Conectado",
+    "offline": "Modo Offline",
+    "syncingCount": "sincronizando"
+  }
+}
