@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
-
-
 
 :root {
   /* Color Palette - Hybrid Minecraft Premium */
@@ -132,6 +130,133 @@ body {
   border-left-color: #0f172a;
   border-bottom-color: #334155;
   border-right-color: #334155;
+}
+
+/* Authentic Minecraft UI Classes */
+.mc-font-pixel {
+  font-family: 'Press Start 2P', monospace;
+}
+
+.mc-font-vt {
+  font-family: 'VT323', monospace;
+}
+
+/* Minecraft Beveled Card */
+.mc-card-quartz {
+  background-color: #dedede;
+  border: 4px solid #17dd62;
+  box-shadow: 
+    inset -4px -4px 0px #a6a6a6,
+    inset 4px 4px 0px #ffffff,
+    0 0 45px rgba(23, 221, 98, 0.65);
+}
+
+/* Minecraft Beveled Input */
+.mc-input {
+  background-color: #b0b0b0;
+  border-top: 3px solid #373737;
+  border-left: 3px solid #373737;
+  border-bottom: 3px solid #e0e0e0;
+  border-right: 3px solid #e0e0e0;
+  color: #111;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+}
+
+.mc-input:focus {
+  outline: 2px solid #17dd62;
+  background-color: #c6c6c6;
+}
+
+/* Minecraft Emerald 3D Button */
+.mc-btn-emerald {
+  background: linear-gradient(180deg, #2cf07b 0%, #129a48 100%);
+  border-top: 3px solid #75f8ab;
+  border-left: 3px solid #75f8ab;
+  border-bottom: 4px solid #07451f;
+  border-right: 4px solid #07451f;
+  color: #04240f;
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.mc-btn-emerald:hover {
+  filter: brightness(1.1);
+}
+
+.mc-btn-emerald:active {
+  border-top: 4px solid #07451f;
+  border-left: 4px solid #07451f;
+  border-bottom: 2px solid #75f8ab;
+  border-right: 2px solid #75f8ab;
+  transform: translateY(2px);
+}
+
+/* Minecraft Wood 3D Button (Discord) */
+.mc-btn-wood {
+  background: linear-gradient(180deg, #4d3625 0%, #362417 100%);
+  border-top: 3px solid #73543d;
+  border-left: 3px solid #73543d;
+  border-bottom: 4px solid #1f120a;
+  border-right: 4px solid #1f120a;
+  color: #ffffff;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.mc-btn-wood:hover {
+  filter: brightness(1.15);
+}
+
+.mc-btn-wood:active {
+  transform: translateY(2px);
+}
+
+/* Minecraft Quartz 3D Button (Google) */
+.mc-btn-quartz {
+  background: linear-gradient(180deg, #ffffff 0%, #d9d9d9 100%);
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 4px solid #858585;
+  border-right: 4px solid #858585;
+  color: #111;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.mc-btn-quartz:hover {
+  filter: brightness(1.05);
+}
+
+.mc-btn-quartz:active {
+  transform: translateY(2px);
+}
+
+/* Minecraft Stone 3D Button (Microsoft) */
+.mc-btn-stone {
+  background: linear-gradient(180deg, #8c8c8c 0%, #666666 100%);
+  border-top: 3px solid #b5b5b5;
+  border-left: 3px solid #b5b5b5;
+  border-bottom: 4px solid #363636;
+  border-right: 4px solid #363636;
+  color: #ffffff;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.mc-btn-stone:hover {
+  filter: brightness(1.15);
+}
+
+.mc-btn-stone:active {
+  transform: translateY(2px);
 }
 
 /* Buttons */

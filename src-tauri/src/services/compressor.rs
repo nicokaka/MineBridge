@@ -8,7 +8,7 @@ use walkdir::WalkDir;
 pub struct Compressor;
 
 impl Compressor {
-    /// Zip a Minecraft world directory into a single archive
+    /// Zip a Minecraft world directory into a single archive with locked-file tolerance
     pub fn zip_world(world_dir: &Path, output_zip_path: &Path) -> Result<(), String> {
         if !world_dir.exists() || !world_dir.is_dir() {
             return Err("World directory does not exist or is not a directory".to_string());
@@ -32,15 +32,29 @@ impl Compressor {
 
             if path.is_file() {
                 let name_str = name.to_string_lossy().replace('\\', "/");
-                zip.start_file(name_str, options)
-                    .map_err(|e| format!("ZIP start file error: {}", e))?;
 
-                let mut f = File::open(path)
-                    .map_err(|e| format!("Failed to open file {:?}: {}", path, e))?;
+                // Safely open file with tolerance for locked files (e.g. session.lock when Minecraft is active)
+                let mut f = match File::open(path) {
+                    Ok(file) => file,
+                    Err(e) => {
+                        let filename = path.file_name().unwrap_or_default().to_string_lossy();
+                        if filename == "session.lock" || e.kind() == std::io::ErrorKind::PermissionDenied {
+                            eprintln!("Warning: Skipping locked file {:?}: {}", path, e);
+                            continue;
+                        } else {
+                            return Err(format!("Failed to open file {:?}: {}", path, e));
+                        }
+                    }
+                };
 
                 let mut buffer = Vec::new();
-                f.read_to_end(&mut buffer)
-                    .map_err(|e| format!("Failed to read file {:?}: {}", path, e))?;
+                if let Err(e) = f.read_to_end(&mut buffer) {
+                    eprintln!("Warning: Failed to read content from {:?}: {}", path, e);
+                    continue;
+                }
+
+                zip.start_file(name_str, options)
+                    .map_err(|e| format!("ZIP start file error: {}", e))?;
 
                 zip.write_all(&buffer)
                     .map_err(|e| format!("Failed to write to ZIP archive: {}", e))?;
@@ -57,7 +71,7 @@ impl Compressor {
         Ok(())
     }
 
-    /// Extract a ZIP archive into a target directory safely
+    /// Extract a ZIP archive into a target directory safely with Zip-Slip protection
     pub fn unzip_world(zip_path: &Path, target_dir: &Path) -> Result<(), String> {
         let file = File::open(zip_path)
             .map_err(|e| format!("Failed to open ZIP file: {}", e))?;
@@ -72,6 +86,7 @@ impl Compressor {
             let mut file = archive.by_index(i)
                 .map_err(|e| format!("Failed to get ZIP item: {}", e))?;
 
+            // Zip Slip security guard
             let outpath = match file.enclosed_name() {
                 Some(path) => target_dir.join(path),
                 None => continue,
