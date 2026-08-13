@@ -1,19 +1,19 @@
 use std::path::PathBuf;
-
 use crate::models::Installation;
 
 pub struct PathResolver;
 
 impl PathResolver {
-    /// Detect all Minecraft installations present on the current system
+    /// Detect all Minecraft installations present on the current system (Windows, Linux, macOS)
     pub fn detect_installations() -> Vec<Installation> {
         let mut installations = Vec::new();
 
-        // 1. Minecraft Java Official
+        // 1. Minecraft Java Official (Native & Flatpak)
         if let Some(java_path) = Self::get_java_official_saves_path() {
             if java_path.exists() {
+                let is_flatpak = java_path.to_string_lossy().contains("com.mojang.Minecraft");
                 installations.push(Installation {
-                    name: "Minecraft Java (Oficial)".to_string(),
+                    name: format!("Minecraft Java ({})", if is_flatpak { "Flatpak" } else { "Oficial" }),
                     edition: "java".to_string(),
                     path: java_path.to_string_lossy().to_string(),
                     launcher_type: "official".to_string(),
@@ -22,11 +22,12 @@ impl PathResolver {
             }
         }
 
-        // 2. Prism Launcher Instances
+        // 2. Prism Launcher Instances (Native & Flatpak)
         for prism_path in Self::get_prism_instances_paths() {
             if prism_path.exists() {
+                let is_flatpak = prism_path.to_string_lossy().contains("org.prismlauncher.PrismLauncher") || prism_path.to_string_lossy().contains(".var");
                 installations.push(Installation {
-                    name: format!("Prism Launcher ({})", if prism_path.to_string_lossy().contains("flatpak") || prism_path.to_string_lossy().contains(".var") { "Flatpak" } else { "Nativo" }),
+                    name: format!("Prism Launcher ({})", if is_flatpak { "Flatpak" } else { "Nativo" }),
                     edition: "java".to_string(),
                     path: prism_path.to_string_lossy().to_string(),
                     launcher_type: "prism".to_string(),
@@ -66,7 +67,7 @@ impl PathResolver {
         installations
     }
 
-    /// Default Java Official Saves path
+    /// Default Java Official Saves path (Windows & Linux Native + Flatpak)
     pub fn get_java_official_saves_path() -> Option<PathBuf> {
         #[cfg(target_os = "windows")]
         {
@@ -75,12 +76,23 @@ impl PathResolver {
 
         #[cfg(target_os = "linux")]
         {
-            dirs::home_dir().map(|p| p.join(".minecraft").join("saves"))
+            if let Some(home) = dirs::home_dir() {
+                let native = home.join(".minecraft").join("saves");
+                if native.exists() {
+                    return Some(native);
+                }
+                let flatpak = home.join(".var").join("app").join("com.mojang.Minecraft").join("data").join("minecraft").join("saves");
+                if flatpak.exists() {
+                    return Some(flatpak);
+                }
+                return Some(native);
+            }
+            None
         }
 
         #[cfg(not(any(target_os = "windows", target_os = "linux")))]
         {
-            dirs::home_dir().map(|p| p.join(".minecraft").join("saves"))
+            dirs::home_dir().map(|p| p.join("Library").join("Application Support").join("minecraft").join("saves"))
         }
     }
 
