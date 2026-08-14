@@ -71,11 +71,7 @@ export const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
       const bytes = await readFileBytes(tempZip);
       const uint8Array = new Uint8Array(bytes);
 
-      try {
-        await uploadWorldZip(storageKey, uint8Array);
-      } catch (uploadErr) {
-        console.warn('Upload notice:', uploadErr);
-      }
+      await uploadWorldZip(storageKey, uint8Array);
 
       await addCloudWorldRecord({
         user_id: user?.id || 'demo-user',

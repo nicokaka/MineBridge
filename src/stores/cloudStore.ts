@@ -88,13 +88,13 @@ export const useCloudStore = create<CloudState>()(
             });
 
           if (error) {
-            console.warn('Supabase storage upload notice (falling back gracefully):', error.message);
-            return true;
+            console.error('Supabase storage upload error:', error.message);
+            throw new Error(`Erro no Supabase Storage: ${error.message}`);
           }
           return true;
-        } catch (err) {
-          console.warn('Upload exception notice:', err);
-          return true;
+        } catch (err: any) {
+          console.error('Upload exception:', err);
+          throw err;
         }
       },
 
@@ -105,15 +105,15 @@ export const useCloudStore = create<CloudState>()(
             .download(storageKey);
 
           if (error || !data) {
-            console.warn('Supabase storage download notice:', error?.message);
-            return null;
+            console.error('Supabase storage download error:', error?.message);
+            throw new Error(error?.message || 'Falha ao baixar o arquivo da nuvem');
           }
 
           const arrayBuffer = await data.arrayBuffer();
           return new Uint8Array(arrayBuffer);
-        } catch (err) {
-          console.warn('Download exception notice:', err);
-          return null;
+        } catch (err: any) {
+          console.error('Download exception:', err);
+          throw err;
         }
       },
 
@@ -126,7 +126,11 @@ export const useCloudStore = create<CloudState>()(
 
           if (isValidUUID) {
             const { data, error } = await supabase.from('cloud_worlds').insert([record]).select();
-            if (!error && data && data.length > 0) {
+            if (error) {
+              console.error('Supabase DB insert error:', error.message);
+              throw new Error(`Erro ao salvar no banco Supabase: ${error.message}`);
+            }
+            if (data && data.length > 0) {
               insertedRecord = data[0] as CloudWorldRecord;
             }
           }
@@ -151,9 +155,9 @@ export const useCloudStore = create<CloudState>()(
           });
 
           return true;
-        } catch (err) {
-          console.warn('Exception adding cloud record:', err);
-          return true;
+        } catch (err: any) {
+          console.error('Exception adding cloud record:', err);
+          throw err;
         }
       },
 

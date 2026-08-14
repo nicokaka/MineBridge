@@ -85,6 +85,35 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, authError: null });
 
         try {
+          // Check URL Hash for Supabase confirmation tokens or errors
+          if (typeof window !== 'undefined' && window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const error_description = params.get('error_description');
+            const access_token = params.get('access_token');
+            const refresh_token = params.get('refresh_token');
+
+            if (access_token && refresh_token) {
+              const { data } = await supabase.auth.setSession({ access_token, refresh_token });
+              if (data?.user) {
+                set({
+                  user: mapSupabaseUser(data.user),
+                  isAuthenticated: true,
+                  isLoading: false,
+                  authError: null,
+                });
+                window.history.replaceState(null, '', window.location.pathname);
+                return;
+              }
+            } else if (error_description) {
+              const friendly = error_description.includes('expired') || error_description.includes('invalid')
+                ? 'O link de confirmação clicado expirou ou já foi utilizado. Por favor, utilize o e-mail mais recente recebido na sua caixa de entrada.'
+                : error_description;
+              set({ authError: friendly });
+              window.history.replaceState(null, '', window.location.pathname);
+            }
+          }
+
           // Check persistent user state
           const currentUser = get().user;
           const isAuth = get().isAuthenticated;
@@ -155,55 +184,49 @@ export const useAuthStore = create<AuthState>()(
             return { success: true };
           }
 
-          // 2. Secondary fallback: Attempt auto signUp if account doesn't exist yet
-          const signUpRes = await supabase.auth.signUp({
-            email,
-            password,
-            options: { data: { name: email.split('@')[0] } },
-          });
-
-          if (signUpRes.data?.user) {
-            set({
-              user: mapSupabaseUser(signUpRes.data.user),
-              isAuthenticated: true,
-              isLoading: false,
-              authError: null,
+          // 2. If user does not exist, attempt auto-signup
+          if (error && error.message.toLowerCase().includes('invalid login credentials')) {
+            const signUpRes = await supabase.auth.signUp({
+              email,
+              password,
+              options: { data: { name: email.split('@')[0] } },
             });
-            return { success: true };
+
+            if (signUpRes.data?.user && signUpRes.data?.session) {
+              set({
+                user: mapSupabaseUser(signUpRes.data.user),
+                isAuthenticated: true,
+                isLoading: false,
+                authError: null,
+              });
+              return { success: true };
+            }
+
+            const errorMsg = translateAuthError(error.message);
+            set({
+              isLoading: false,
+              authError: errorMsg,
+            });
+            return { success: false, error: errorMsg };
           }
 
-          // 3. Zero-friction fallback for cross-platform Linux & Windows access
-          const username = email.split('@')[0] || 'Player';
-          const formattedName = username.charAt(0).toUpperCase() + username.slice(1);
-          set({
-            user: {
-              id: `user-${Date.now()}`,
-              email,
-              name: formattedName,
-              avatar_url: `https://mc-heads.net/avatar/${username}`,
-              isDemo: false,
-            },
-            isAuthenticated: true,
-            isLoading: false,
-            authError: null,
-          });
+          if (error) {
+            const errorMsg = translateAuthError(error.message);
+            set({
+              isLoading: false,
+              authError: errorMsg,
+            });
+            return { success: false, error: errorMsg };
+          }
+
           return { success: true };
         } catch (err: any) {
-          const username = email.split('@')[0] || 'Player';
-          const formattedName = username.charAt(0).toUpperCase() + username.slice(1);
+          const errorMsg = err?.message || 'Erro ao conectar ao Supabase';
           set({
-            user: {
-              id: `user-${Date.now()}`,
-              email,
-              name: formattedName,
-              avatar_url: `https://mc-heads.net/avatar/${username}`,
-              isDemo: false,
-            },
-            isAuthenticated: true,
             isLoading: false,
-            authError: null,
+            authError: errorMsg,
           });
-          return { success: true };
+          return { success: false, error: errorMsg };
         }
       },
 

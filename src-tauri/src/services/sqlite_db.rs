@@ -6,6 +6,12 @@ pub struct LocalDatabase {
     db_path: PathBuf,
 }
 
+impl Default for LocalDatabase {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LocalDatabase {
     pub fn new() -> Self {
         let app_dir = dirs::data_dir()
@@ -113,10 +119,8 @@ impl LocalDatabase {
         })?;
 
         let mut worlds = Vec::new();
-        for w in world_iter {
-            if let Ok(world) = w {
-                worlds.push(world);
-            }
+        for world in world_iter.flatten() {
+            worlds.push(world);
         }
 
         Ok(worlds)

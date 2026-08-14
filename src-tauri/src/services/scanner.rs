@@ -19,14 +19,20 @@ impl WorldScanner {
             let inst_path = Path::new(&inst.path);
             if inst.edition == "java" {
                 if inst.launcher_type == "prism" {
-                    // Prism instances directory structure: <instances>/<instance_name>/.minecraft/saves/
+                    // Prism instances directory structure: <instances>/<instance_name>/minecraft/saves/ or .minecraft/saves/
                     if let Ok(entries) = fs::read_dir(inst_path) {
                         for entry in entries.flatten() {
                             let instance_dir = entry.path();
-                            let saves_dir = instance_dir.join(".minecraft").join("saves");
-                            if saves_dir.exists() && saves_dir.is_dir() {
-                                let mut found = Self::scan_java_saves_folder(&saves_dir, &inst.launcher_type);
-                                worlds.append(&mut found);
+                            let candidates = [
+                                instance_dir.join("minecraft").join("saves"),
+                                instance_dir.join(".minecraft").join("saves"),
+                                instance_dir.join("saves"),
+                            ];
+                            for saves_dir in &candidates {
+                                if saves_dir.exists() && saves_dir.is_dir() {
+                                    let mut found = Self::scan_java_saves_folder(saves_dir, &inst.launcher_type);
+                                    worlds.append(&mut found);
+                                }
                             }
                         }
                     }

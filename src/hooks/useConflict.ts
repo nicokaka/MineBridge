@@ -1,10 +1,12 @@
 import { useSyncStore } from '../stores/syncStore';
 import { useCloudStore } from '../stores/cloudStore';
+import { useAuthStore } from '../stores/authStore';
 import { backupWorld, extractWorld, writeFileBytes, deleteFile, getSaveDir, getTempZipPath } from '../services/tauriCommands';
 
 export function useConflictResolver() {
   const { conflict, closeConflict } = useSyncStore();
   const { downloadWorldZip } = useCloudStore();
+  const { user } = useAuthStore();
 
   const resolveKeepLocal = async () => {
     // Keep local version (force overwrite cloud)
@@ -16,7 +18,7 @@ export function useConflictResolver() {
     // Restore cloud version over local version (safety backup is created automatically by Rust backend before overwriting)
     if (conflict.worldId) {
       try {
-        const storageKey = `demo/${conflict.worldId}/world.zip`;
+        const storageKey = `${user?.id || 'demo'}/${conflict.worldId}/world.zip`;
         const bytes = await downloadWorldZip(storageKey);
         if (bytes) {
           const tempZipPath = await getTempZipPath(`conflict_${conflict.worldId}.zip`);

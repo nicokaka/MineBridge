@@ -61,15 +61,11 @@ impl Hasher {
                 .strip_prefix(dir_path)
                 .unwrap_or(entry.path());
 
-            hasher.update(rel_path.to_string_lossy().as_bytes());
+            let rel_path_str = rel_path.to_string_lossy().replace('\\', "/");
+            hasher.update(rel_path_str.as_bytes());
 
             if let Ok(meta) = entry.metadata() {
-                hasher.update(&meta.len().to_le_bytes());
-                if let Ok(mod_time) = meta.modified() {
-                    if let Ok(duration) = mod_time.duration_since(std::time::UNIX_EPOCH) {
-                        hasher.update(&duration.as_secs().to_le_bytes());
-                    }
-                }
+                hasher.update(meta.len().to_le_bytes());
             }
         }
 
